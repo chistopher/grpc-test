@@ -5,7 +5,7 @@ metadata:
   labels:
     app: grpc-server
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: grpc-server
@@ -16,10 +16,7 @@ spec:
     spec:
       containers:
         - name: grpc-server
-          image: your-dockerhub-username/grpc-server:latest # Replace with your Docker image
+          image: localhost/grpc-server:latest
+          imagePullPolicy: Never
           ports:
             - containerPort: 50051
-          env:
-            - name: RUST_LOG
-              value: "info"
-

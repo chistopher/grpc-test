@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: grpc-client
-          image: your-dockerhub-username/grpc-client:latest # Replace with your Docker image
+          image: localhost/grpc-client:latest
+          imagePullPolicy: Never
           env:
-            - name: RUST_LOG
-              value: "info"
-
+          - name: GRPC_SERVER_ADDRESS
+            value: "http://grpc-server-service.default.svc.cluster.local"

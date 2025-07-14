@@ -3,13 +3,29 @@
 SERVER_IMAGE := "grpc-server:latest"
 CLIENT_IMAGE := "grpc-client:latest"
 
+# setup minikube
+setup-minikube:
+    minikube config set driver podman
+    minikube config set rootless true
+    minikube start --container-runtime=containerd
+
+remove-minikube:
+    minikube stop
+    minikube delete
+
 # Build the server Docker image
 build-server:
     podman build -t {{ SERVER_IMAGE }} -f Dockerfile.server .
+    podman save {{ SERVER_IMAGE }} -o image.tar
+    minikube image load image.tar
+    rm image.tar
 
 # Build the client Docker image
 build-client:
     podman build -t {{ CLIENT_IMAGE }} -f Dockerfile.client .
+    podman save {{ CLIENT_IMAGE }} -o image.tar
+    minikube image load image.tar
+    rm image.tar
 
 # Run the server container using the host network
 run-server:
