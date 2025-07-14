@@ -27,6 +27,13 @@ build-client:
     minikube image load image.tar
     rm image.tar
 
+reset-deployment:
+    kubectl delete deployment grpc-client
+    kubectl create -f k8s/client-deployment.yaml
+
+create-debug-pod:
+    kubectl run test-pod --image=busybox --restart=Never -- sh -c "sleep 3600"
+
 # Run the server container using the host network
 run-server:
     podman run --rm --name grpc-server --network host {{ SERVER_IMAGE }}

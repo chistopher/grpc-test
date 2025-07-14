@@ -8,8 +8,7 @@ pub mod api {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = std::env::var("GRPC_SERVER_ADDRESS").unwrap_or("http://127.0.0.1".to_string());
-    let addr = format!("{addr}:50051");
+    let addr = std::env::var("GRPC_SERVER_ADDRESS").unwrap_or("http://127.0.0.1:50051".to_string());
     println!("Connecting to gRPC server at {}", addr);
     let mut client = api::test_service_client::TestServiceClient::connect(addr).await?;
 

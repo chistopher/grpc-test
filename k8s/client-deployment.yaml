@@ -14,10 +14,28 @@ spec:
       labels:
         app: grpc-client
     spec:
+      dnsPolicy: ClusterFirst
+      initContainers:
+        - name: dns-check
+          image: busybox
+          command:
+            - "sh"
+            - "-c"
+            - |
+              echo "Checking /etc/resolv.conf:"
+              cat /etc/resolv.conf
+              echo "Attempting DNS resolution..."
+              for i in $(seq 1 10); do
+                nslookup grpc-server-service.default.svc.cluster.local && exit 0
+                echo "DNS resolution failed, retrying in 2 seconds..."
+                sleep 2
+              done
+              echo "DNS resolution failed after 10 attempts."
+              exit 1
       containers:
         - name: grpc-client
           image: localhost/grpc-client:latest
           imagePullPolicy: Never
           env:
           - name: GRPC_SERVER_ADDRESS
-            value: "http://grpc-server-service.default.svc.cluster.local"
+            value: "http://grpc-server-service.default.svc.cluster.local:50051"

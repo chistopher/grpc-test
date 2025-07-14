@@ -34,7 +34,7 @@ impl api::test_service_server::TestService for TestService {
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let addr = "127.0.0.1:50051".parse()?; // Changed from "[::1]:50051" to "127.0.0.1:50051"
+    let addr = "0.0.0.0:50051".parse()?; // Changed from "127.0.0.1:50051" to "0.0.0.0:50051"
     let server_id: String = rand::thread_rng()
         .sample_iter(&rand::distributions::Alphanumeric)
         .take(8)
