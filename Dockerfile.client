@@ -1,9 +1,10 @@
 FROM rust:latest AS builder
 
 WORKDIR /usr/src/app
-COPY . .
-
 RUN apt-get update && apt-get install -y protobuf-compiler
+COPY src src
+COPY proto proto
+COPY build.rs Cargo.toml Cargo.lock ./
 RUN cargo build --release --bin client
 
 FROM debian:latest
