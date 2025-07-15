@@ -31,8 +31,8 @@ reset-deployment:
     kubectl delete deployment grpc-client
     kubectl create -f k8s/client-deployment.yaml
 
-create-debug-pod:
-    kubectl run test-pod --image=busybox --restart=Never -- sh -c "sleep 3600"
+debug-run:
+    kubectl run test-pod -it --rm --image=busybox --restart=Never -- sh
 
 # Run the server container using the host network
 run-server:

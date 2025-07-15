@@ -1,9 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: grpc-client
-  labels:
-    app: grpc-client
+  name: client-deployment
 spec:
   replicas: 1
   selector:
@@ -14,7 +12,6 @@ spec:
       labels:
         app: grpc-client
     spec:
-      dnsPolicy: ClusterFirst
       initContainers:
         - name: dns-check
           image: busybox
@@ -25,13 +22,7 @@ spec:
               echo "Checking /etc/resolv.conf:"
               cat /etc/resolv.conf
               echo "Attempting DNS resolution..."
-              for i in $(seq 1 10); do
-                nslookup grpc-server-service.default.svc.cluster.local && exit 0
-                echo "DNS resolution failed, retrying in 2 seconds..."
-                sleep 2
-              done
-              echo "DNS resolution failed after 10 attempts."
-              exit 1
+              nslookup grpc-server-service.default.svc.cluster.local
       containers:
         - name: grpc-client
           image: localhost/grpc-client:latest
