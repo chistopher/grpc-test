@@ -28,7 +28,7 @@ build-client:
     rm image.tar
 
 reset-deployment:
-    kubectl delete deployment grpc-client
+    kubectl delete deployment client-deployment
     kubectl create -f k8s/client-deployment.yaml
 
 debug-run:
