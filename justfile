@@ -7,6 +7,7 @@ CLIENT_IMAGE := "grpc-client:latest"
 setup-minikube:
     minikube config set driver podman
     minikube config set rootless true
+    minikube addons enable ingress
     minikube start --container-runtime=containerd
 
 remove-minikube:

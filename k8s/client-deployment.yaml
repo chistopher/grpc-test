@@ -12,21 +12,10 @@ spec:
       labels:
         app: grpc-client
     spec:
-      initContainers:
-        - name: dns-check
-          image: busybox
-          command:
-            - "sh"
-            - "-c"
-            - |
-              echo "Checking /etc/resolv.conf:"
-              cat /etc/resolv.conf
-              echo "Attempting DNS resolution..."
-              nslookup grpc-server-service.default.svc.cluster.local
       containers:
         - name: grpc-client
           image: localhost/grpc-client:latest
           imagePullPolicy: Never
           env:
           - name: GRPC_SERVER_ADDRESS
-            value: "http://grpc-server-service.default.svc.cluster.local:50051"
+            value: "http://ingress-nginx-controller.ingress-nginx.svc.cluster.local:80"
