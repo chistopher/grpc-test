@@ -32,6 +32,16 @@ reset-deployment:
     kubectl delete deployment client-deployment
     kubectl create -f k8s/client-deployment.yaml
 
+create-nginx:
+    kubectl create -f k8s/nginx-config.yaml
+    kubectl create -f k8s/nginx-deployment.yaml
+    kubectl create -f k8s/nginx-service.yaml
+
+delete-nginx:
+    kubectl delete service nginx-reverse-proxy
+    kubectl delete deployment nginx-reverse-proxy
+    kubectl delete configmaps nginx-config
+
 debug-run:
     kubectl run test-pod -it --rm --image=busybox --restart=Never -- sh
 
